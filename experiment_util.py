@@ -213,7 +213,6 @@ if __name__=="__main__":
     cropping = {"top":100,"bot":100,"left":100,"right":100}
     cropped_image = simple_cropping(images[0],  cropp_args=cropping)
 
-    #fcm = sFCM(2, 9, 1, 1, 3, cropped_image.shape)
     dfc = DFC(minLabels=9, max_iters=100, maxLabels=200,nChannel=50, nConv=3)
     dfc.initialize_clustering(cropped_image)
 
@@ -222,7 +221,4 @@ if __name__=="__main__":
     labels_probs = [[sample[key] for key in sample] for sample in labels_dict]
     sample_labels = [[np.random.binomial(1, x) for x in label_p] for label_p in labels_probs]
 
-
-    #metric_stats = load_run(fcm,sample_labels, labels_names, eps=0.02,preloaded_images=images,cropping=True, n_iter=sFCM.MAX_ITER, cropp_args=cropping,paths=False, n_trials=5, save_trials=True,save_stats=True, verbose=True)
     metric_stats = load_run(dfc,sample_labels, labels_names,preloaded_images=images,cropping=True, n_iter=dfc.maxIters, cropp_args=cropping,paths=False, n_trials=1, show_convergence=True,show_image=True, save_trials=False,save_stats=False, verbose=True)
-    #np.save(data_storage_path_compiled+experiments_name+" "+type(model).__name__, np.array(combine_im_metrics(metric_stats), dtype=object))

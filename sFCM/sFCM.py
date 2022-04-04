@@ -207,8 +207,6 @@ class sFCM(FCM):
         
         new_vis_ar = np.array(self._vi(self.u, im))
         centre_diff = np.abs(new_vis_ar-vis_ar)
-        print(centre_diff)
-        #print(np.max(centre_diff))
         if np.max(centre_diff)<eps:
             return {"membership":self.u,"labels":stats, "im" : stats}, True
 
@@ -267,24 +265,16 @@ if __name__ == "__main__":
         
     import cv2
 
-    #test = cv2.resize(cv2.imread('Project-Course-in-Data-Science/Experiments_data/60.jpeg'), (100,100))
+
     test = cv2.imread('Project-Course-in-Data-Science/Experiments_data/Images/T1sample0_slice68.jpeg')
     comp_test = cv2.imread('Pytorch-unsupervised-segmentation-tip/BSD500/101027.jpg')
-    #test = cv2.cvtColor(cv2.resize(test, (50, 50)), cv2.COLOR_BGR2GRAY)
 
-    #fcm = sFCM(2, 5, 1, 0.5, 3, comp_test.shape)
-    #fcm = sFCM(2, 5, 1, 0.5, 3, test.shape)
     fcm = FCM(2, 10, test.shape)
-    #fcm = csFCM(3, 2, 1, 0.5, 3, test.shape)
+
     stats = experiment_runs(fcm,metric_0,comp_test,0,15, n_trials=30)
     for c, (stat, finish) in enumerate(fcm.run(comp_test, 0,n_iter=1)):
-        #img = cv2.resize(stat, comp_test.shape).astype(np.uint8)
         img = stat.astype(np.uint8)
         cv2.imwrite('Project-Course-in-Data-Science/sFCM/gifs/{}.jpeg'.format(c), img)
-        #cv2.imshow("test {}".format(c), img)
-        #cv2.waitKey()
-    #print(test.shape)
-    #fcm.sfcm(test, None)
 
 
 

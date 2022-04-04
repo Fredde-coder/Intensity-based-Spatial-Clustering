@@ -91,7 +91,6 @@ if __name__ == "__main__":
 
 
     pet, uMap, T1, T2, ground_truth = s.sample_mMR_dataset(parameters, nr_images_T1+nr_images_T2, 1337)
-    #pet, uMap, T1, T2, ground_truth = s.sample_mMR_dataset(parameters, 1, 1337)
     data_set = T1
     t_set = "T1"
     for i in range(nr_images_T1+nr_images_T2):

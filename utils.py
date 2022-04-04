@@ -64,7 +64,6 @@ class Cluster:
             b) A subset 'A' from other.labels that satisfies: x in A iff (x not in B and x in other.labels) (complement of B)
         '''
         mp  = {x : [] for x in np.unique(self.labels)}
-        #iou = lambda x, y : len(x & y)/len(x | y)
 
         #Create a mapping
         for p1 in self.partition:
@@ -103,7 +102,6 @@ class Cluster:
         invioumap = defaultdict(list)
         for key in ioumap:
             invioumap[ioumap[key][1]].append(key)
-        #invioumap = {ioumap[key][1] : key for key in ioumap}
 
 
         names = [key for key in ioumap]

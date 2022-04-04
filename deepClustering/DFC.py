@@ -25,10 +25,11 @@ use_cuda = torch.cuda.is_available()
 
 # CNN model
 class MyNet(nn.Module):
-    def __init__(self,input_dim, nChannel, nConv):
+    def __init__(self,input_dim, nChannel, nConv, use_cuda):
         super(MyNet, self).__init__()
         self.nChannel = nChannel
         self.nConv    = nConv
+        self.use_cuda = use_cuda
 
 
         self.conv1 = nn.Conv2d(input_dim, nChannel, kernel_size=3, stride=1, padding=1 )
@@ -76,13 +77,13 @@ class DFC:
         else:
             data = np.expand_dims(np.expand_dims(im, 0), 0)
             data = torch.from_numpy(data.astype('float32')/255.)
-        if use_cuda:
+        if self.use_cuda:
             data = data.cuda()
         self.data = Variable(data)
         self.im = im
         
         # train
-        self.model = MyNet( data.size(1), self.nChannel, self.nConv)
+        self.model = MyNet( data.size(1), self.nChannel, self.nConv, use_cuda = self.use_cuda)
         if self.use_cuda:
             self.model.cuda()
         self.model.train()
@@ -194,17 +195,5 @@ if __name__ == "__main__":
 
     for i in range(0, 100):
         im, labels, r_map, n_labels = dfc.step()
-        #cv2.imwrite('PCiDS/sFCM/gifs/{}.jpeg'.format(i), im)
         cv2.imshow('{}'.format(i), im)
         cv2.waitKey(10)
-'''
-# save output image
-if not args.visualize:
-    output = model( data )[ 0 ]
-    output = output.permute( 1, 2, 0 ).contiguous().view( -1, args.nChannel )
-    ignore, target = torch.max( output, 1 )
-    im_target = target.data.cpu().numpy()
-    im_target_rgb = np.array([label_colours[ c % args.nChannel ] for c in im_target])
-    im_target_rgb = im_target_rgb.reshape( im.shape ).astype( np.uint8 )
-cv2.imwrite( "output.png", im_target_rgb )
-'''
